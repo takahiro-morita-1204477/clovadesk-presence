@@ -25,6 +25,11 @@ clova = Clova(
 speech_builder = SpeechBuilder(default_language='ja')
 response_builder = ResponseBuilder(default_language='ja')
 
+# 起動時に実行
+@clova.handle.launch
+def launch_request_handler(clova_request):
+    return clova.response("こんにちは，サイコロに設定したい数字を指定してください")
+
 @app.route('/', methods=['GET', 'POST'])
 def lambda_handler(event=None, context=None):
     logger.info('Lambda function invoked index()')
