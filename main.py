@@ -72,4 +72,5 @@ def decide_num(end_num):
         logger.error("Exception at decide_num: %s", e)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.getenv("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
