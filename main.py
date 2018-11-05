@@ -44,6 +44,7 @@ def lambda_handler(event=None, context=None):
 def clova_service():
     resp = clova.route(request.data, request.headers)
     resp = jsonify(resp)
+    print(resp)
     # make sure we have correct Content-Type that CEK expects
     resp.headers['Content-Type'] = 'application/json;charset-UTF-8'
     return resp
