@@ -34,7 +34,7 @@ def launch_request_handler(clova_request):
 @clova.handle.end
 def end_handler(clova_request):
     return
-    
+
 @app.route('/', methods=['GET', 'POST'])
 def lambda_handler(event=None, context=None):
     logger.info('Lambda function invoked index()')
@@ -83,4 +83,5 @@ def decide_num(end_num):
 
 if __name__ == '__main__':
     port = int(os.getenv("PORT", 5000))
+    app.debug = True
     app.run(host="0.0.0.0", port=port)
