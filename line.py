@@ -37,14 +37,6 @@ def lambda_handler(event=None, context=None):
     logger.info('Lambda function invoked index()')
     return 'hello from Flask!'
 
-@app.route('/clova', methods=['POST'])
-def clova_service():
-    resp = clova.route(request.data, request.headers)
-    resp = jsonify(resp)
-    # make sure we have correct Content-Type that CEK expects
-    resp.headers['Content-Type'] = 'application/json;charset-UTF-8'
-    return resp
-
 @clova.handle.intent('CallNumberIntent')
 def find_gourmet_by_prefecture_intent_handler(clova_request):
     logger.info('find_gourmet_by_prefecture_intent_handler method called!!')
@@ -66,6 +58,14 @@ def find_gourmet_by_prefecture_intent_handler(clova_request):
             'いくつからいくつまでの範囲で振って欲しいですか？')
     # retrun
     return response
+
+@app.route('/clova', methods=['POST'])
+def clova_service():
+    resp = clova.route(request.data, request.headers)
+    resp = jsonify(resp)
+    # make sure we have correct Content-Type that CEK expects
+    resp.headers['Content-Type'] = 'application/json;charset-UTF-8'
+    return resp
 
 def decide_num(end_num):
     logger.info("decide_num started")
