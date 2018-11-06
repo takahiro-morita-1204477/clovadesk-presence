@@ -1,5 +1,4 @@
 import os
-import logging
 import random
 
 from flask import (
@@ -8,10 +7,6 @@ from flask import (
 from cek import (
     Clova, SpeechBuilder, ResponseBuilder
 )
-
-logging.basicConfig()
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 # Flask
 app = Flask(__name__)
