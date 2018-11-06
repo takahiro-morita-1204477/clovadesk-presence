@@ -34,21 +34,21 @@ def end_handler(clova_request):
 
 @app.route('/', methods=['GET', 'POST'])
 def lambda_handler(event=None, context=None):
-    logger.info('Lambda function invoked index()')
+    app.logger.info('Lambda function invoked index()')
     return 'hello from Flask!'
 
 @clova.handle.intent('CallNumberIntent')
 def find_gourmet_by_prefecture_intent_handler(clova_request):
-    logger.info('find_gourmet_by_prefecture_intent_handler method called!!')
+    app.logger.info('find_gourmet_by_prefecture_intent_handler method called!!')
     end_num = clova_request.slot_value('endNumber')
-    logger.info('Prefecture: %s', end_num)
+    app.logger.info('Prefecture: %s', end_num)
     response = None
     if end_num is not None:
         try:
             response = decide_num(end_num)
         except Exception as e:
             # 処理中に例外が発生した場合は、最初からやり直してもらう
-            logger.error('Exception at make_gourmet_info_message_for: %s', e)
+            app.logger.error('Exception at make_gourmet_info_message_for: %s', e)
             text = '処理中にエラーが発生しました。もう一度はじめからお願いします。'
             response = response_builder.simple_speech_text(text)
     else:
@@ -68,7 +68,7 @@ def clova_service():
     return resp
 
 def decide_num(end_num):
-    logger.info("decide_num started")
+    app.logger.info("decide_num started")
     try:
         sai_res = random.randint(0, int(end_num))
         message = "サイコロの目は{}".format(str(sai_res))
@@ -76,7 +76,7 @@ def decide_num(end_num):
         response = response_builder.simple_speech_text(message, end_session=end_session)
         return response
     except Exception as e:
-        logger.error("Exception at decide_num: %s", e)
+        app.logger.error("Exception at decide_num: %s", e)
 
 if __name__ == '__main__':
     port = int(os.getenv("PORT", 5000))
