@@ -8,6 +8,8 @@ from cek import (
     Clova, SpeechBuilder, ResponseBuilder
 )
 
+
+
 # Flask
 app = Flask(__name__)
 
@@ -77,5 +79,6 @@ def decide_num(end_num):
         logger.error("Exception at decide_num: %s", e)
 
 if __name__ == '__main__':
+    port = int(os.getenv("PORT", 5000))
     app.debug = True
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", port=port)
