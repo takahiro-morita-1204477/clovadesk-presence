@@ -62,7 +62,7 @@ def decide_num(start_num, end_num):
         return str(sai_res)
     except Exception as e:
         app.logger.error("Exception at decide_num: %s", e)
-        return "分かりませんでした"
+        return "分かりません"
 
 if __name__ == '__main__':
     port = int(os.getenv("PORT", 5000))
