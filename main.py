@@ -38,7 +38,8 @@ def wife_status_handler(clova_request):
     app.logger.info("Intent started")
     start_num = clova_request.slot_value("startNum")
     end_num = clova_request.slot_value('endNum')
-    if int(start_num) > int(end_num):
+    app.logger.info("startNum: {}, endNum: {}".format(str(start_num), str(end_num)))
+    if start_num > end_num:
         res = decide_num(end_num, start_num)
     else:
         res = decide_num(start_num, end_num)
