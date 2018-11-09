@@ -35,7 +35,7 @@ def launch_request_handler(clova_request):
 # WifeStatusIntentの発火箇所
 @clova.handle.intent("callNumber")
 def wife_status_handler(clova_request):
-    app.logger.info("Hello World")
+    app.logger.info("Intent started")
     start_num = clova_request.slot_value("startNum")
     end_num = clova_request.slot_value('endNum')
     if start_num > end_num:
