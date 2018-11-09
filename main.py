@@ -38,8 +38,10 @@ def wife_status_handler(clova_request):
     app.logger.info("Hello World")
     start_num = clova_request.slot_value("startNum")
     end_num = clova_request.slot_value('endNum')
-    res = decide_num(start_num, end_num)
-
+    if start_num > end_num:
+        res = decide_num(end_num, start_num)
+    else:
+        res = decide_num(start_num, end_num)
     message_japanese = cek.Message(message="結果は{}でした。".format(res), language="ja")
     response = clova.response([message_japanese])
     return response
