@@ -39,8 +39,9 @@ def wife_status_handler(clova_request):
     start_num = clova_request.slot_value("startNum")
     end_num = clova_request.slot_value('endNum')
     app.logger.info("startNum: {}, endNum: {}".format(str(start_num), str(end_num)))
-    if end_num == None:
+    if end_num is None:
         end_num = 0
+
     if start_num > end_num:
         res = decide_num(end_num, start_num)
     else:
