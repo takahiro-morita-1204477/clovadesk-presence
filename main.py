@@ -32,15 +32,13 @@ def launch_request_handler(clova_request):
     response = clova.response([welcome_japanese])
     return response
 
-# WifeStatusIntentの発火箇所
+# callNumberIntentが解析されたら実行
 @clova.handle.intent("callNumber")
-def wife_status_handler(clova_request):
+def number_handler(clova_request):
     app.logger.info("Intent started")
     start_num = clova_request.slot_value("startNum")
     end_num = clova_request.slot_value('endNum')
     app.logger.info("startNum: {}, endNum: {}".format(str(start_num), str(end_num)))
-    if end_num is None:
-        end_num = 0
 
     if start_num > end_num:
         res = decide_num(end_num, start_num)
