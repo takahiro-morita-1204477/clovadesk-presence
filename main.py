@@ -39,11 +39,8 @@ def number_handler(clova_request):
     start_num = clova_request.slot_value("startNum")
     end_num = clova_request.slot_value('endNum')
     app.logger.info("startNum: {}, endNum: {}".format(str(start_num), str(end_num)))
+    res = decide_num(end_num, start_num)
 
-    if start_num > end_num:
-        res = decide_num(end_num, start_num)
-    else:
-        res = decide_num(start_num, end_num)
     message_japanese = cek.Message(message="結果は{}でした。".format(res), language="ja")
     response = clova.response([message_japanese])
     return response
@@ -59,10 +56,14 @@ def end_handler(clova_request):
 def default_handler(request):
     return clova.response("Sorry I don't understand! Could you please repeat?")
 
+
 def decide_num(start_num, end_num):
     app.logger.info("decide_num started")
     try:
-        sai_res = random.randint(int(start_num), int(end_num))
+        if start_num > end_num:
+            sai_res = random.randint(int(end_num), int(start_num))
+        else:
+            sai_res = random.randint(int(start_num), int(end_num))
         return str(sai_res)
     except Exception as e:
         app.logger.error("Exception at decide_num: %s", e)
