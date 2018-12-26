@@ -8,8 +8,6 @@ from cek import (
     Clova, SpeechBuilder, ResponseBuilder
 )
 
-
-
 # Flask
 app = Flask(__name__)
 
@@ -30,8 +28,11 @@ def launch_request_handler(clova_request):
 
 # 終了時に実行
 @clova.handle.end
-def end_handler(clova_request):
-    return
+def launch_request_handler(clova_request):
+    open_message = "こんにちは，サイコロに設定したい数字を指定してください"
+    welcome_japanese = cek.Message(message=open_message, language="ja")
+    response = clova.response([welcome_japanese])
+    return response
 
 @app.route('/', methods=['GET', 'POST'])
 def lambda_handler(event=None, context=None):
