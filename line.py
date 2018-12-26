@@ -24,15 +24,15 @@ response_builder = ResponseBuilder(default_language='ja')
 # 起動時に実行
 @clova.handle.launch
 def launch_request_handler(clova_request):
-    return clova.response("こんにちは，サイコロに設定したい数字を指定してください")
-
-# 終了時に実行
-@clova.handle.end
-def launch_request_handler(clova_request):
     open_message = "こんにちは，サイコロに設定したい数字を指定してください"
     welcome_japanese = cek.Message(message=open_message, language="ja")
     response = clova.response([welcome_japanese])
     return response
+
+# 終了時に実行
+@clova.handle.end
+def end_handler(clova_request):
+    return
 
 @app.route('/', methods=['GET', 'POST'])
 def lambda_handler(event=None, context=None):
