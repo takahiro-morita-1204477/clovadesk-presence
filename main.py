@@ -19,6 +19,7 @@ def lambda_handler(event=None, context=None):
 # /clova に対してのPOSTリクエストを受け付けるサーバーを立てる
 @app.route('/clova', methods=['POST'])
 def my_service():
+    print(request.headers)
     body_dict = clova.route(body=request.data, header=request.headers)
     response = jsonify(body_dict)
     response.headers['Content-Type'] = 'application/json;charset-UTF-8'
