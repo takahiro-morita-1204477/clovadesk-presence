@@ -7,7 +7,7 @@ import cek
 app = Flask(__name__)
 
 clova = cek.Clova(
-    application_id="com.heroku.kmiura.app",
+    application_id="com.example.tutorial.test2",
     default_language="ja",
     debug_mode=True)
 
