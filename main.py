@@ -3,11 +3,12 @@
 from flask import Flask, request, jsonify
 import os, random
 import cek
+from elasticsearch import Elasticsearch
 
 app = Flask(__name__)
 
 clova = cek.Clova(
-    application_id="com.example.tutorial.test2",
+    application_id="com.example.tutorial.test",
     default_language="ja",
     debug_mode=True)
 
@@ -28,21 +29,20 @@ def my_service():
 # 起動時の処理
 @clova.handle.launch
 def launch_request_handler(clova_request):
-    open_message = "森田さん，サイコロに設定したい数字を指定してください"
+    open_message = "知りたい情報を教えてください"
     welcome_japanese = cek.Message(message=open_message, language="ja")
     response = clova.response([welcome_japanese])
     return response
 
 # callNumberIntentが解析されたら実行
-@clova.handle.intent("callNumber")
+@clova.handle.intent("callStatus")
 def number_handler(clova_request):
     app.logger.info("Intent started")
-    start_num = clova_request.slot_value("startNum")
-    end_num = clova_request.slot_value('endNum')
-    app.logger.info("startNum: {}, endNum: {}".format(str(start_num), str(end_num)))
-    res = decide_num(end_num, start_num)
+    status = clova_request.slot_value("status")
+    app.logger.info("status: {}".format(str(status)))
+    res = get_status(status)
 
-    message_japanese = cek.Message(message="結果は{}でした。".format(res), language="ja")
+    message_japanese = cek.Message(message="森田さんの{}は{}パーセントです。".format(str(status),res), language="ja")
     response = clova.response([message_japanese])
     return response
 
@@ -58,19 +58,17 @@ def default_handler(request):
     return clova.response("Sorry I don't understand! Could you please repeat?")
 
 
-def decide_num(start_num, end_num):
-    app.logger.info("decide_num started")
+def get_status(status):
+    app.logger.info("get_status started")
     try:
-        if start_num > end_num:
-            sai_res = random.randint(int(end_num), int(start_num))
-        else:
-            sai_res = random.randint(int(start_num), int(end_num))
-        return str(sai_res)
+        resjson = client.search(index="mindwavemobile2", size=1, body={"query": {"match_all": {}}, "sort": {"@timestamp": "desc"}})
+        return str(resjson["hits"]["hits"][0]["_source"][status])
     except Exception as e:
-        app.logger.error("Exception at decide_num: %s", e)
+        app.logger.error("Exception at get_status: %s", e)
         return "分かりません"
 
 if __name__ == '__main__':
+    client = Elasticsearch("218.45.184.148:59200")
     port = int(os.getenv("PORT", 5000))
     app.debug = True
     app.run(host="0.0.0.0", port=port)
