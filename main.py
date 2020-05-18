@@ -42,7 +42,7 @@ def number_handler(clova_request):
     app.logger.info("status: {}".format(str(status)))
     res = get_status(status)
 
-    message_japanese = cek.Message(message="森田さんの{}は{}パーセントです。".format(str(status),res), language="ja")
+    message_japanese = cek.Message(message="森田さんの{}は{}です。".format(str(status),res), language="ja")
     response = clova.response([message_japanese])
     return response
 
@@ -62,10 +62,15 @@ def get_status(status):
     app.logger.info("get_status started")
     try:
         resjson = client.search(index="mindwavemobile2", size=1, body={"query": {"match_all": {}}, "sort": {"@timestamp": "desc"}})
-        return str(resjson["hits"]["hits"][0]["_source"][status])
+        if status == "集中力":
+            return str(resjson["hits"]["hits"][0]["_source"]["attention"])
+        elif status == "リラックス度":
+            return str(resjson["hits"]["hits"][0]["_source"]["meditation"])
+        else:
+            return "不明"
     except Exception as e:
         app.logger.error("Exception at get_status: %s", e)
-        return "分かりません"
+        return "不明"
 
 if __name__ == '__main__':
     client = Elasticsearch("218.45.184.148:59200")
