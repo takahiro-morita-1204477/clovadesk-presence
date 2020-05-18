@@ -62,6 +62,7 @@ def get_status(status):
     app.logger.info("get_status started")
     try:
         resjson = client.search(index="mindwavemobile2", size=1, body={"query": {"match_all": {}}, "sort": {"@timestamp": "desc"}})
+        app.logger.info(resjson)
         if status == "集中度":
             return str(resjson["hits"]["hits"][0]["_source"]["attention"])
         elif status == "リラックス度":
