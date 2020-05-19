@@ -34,7 +34,7 @@ def launch_request_handler(clova_request):
     response = clova.response([welcome_japanese])
     return response
 
-# callNumberIntentが解析されたら実行
+# callStatusが解析されたら実行
 @clova.handle.intent("callStatus")
 def number_handler(clova_request):
     app.logger.info("Intent started")
@@ -45,6 +45,15 @@ def number_handler(clova_request):
     message_japanese = cek.Message(message="森田さんの{}は{}です。".format(str(status),res), language="ja")
     response = clova.response([message_japanese])
     return response
+
+# callTrumpStatusが解析されたら実行
+@clova.handle.intent("callTrumpStatus")
+def number_handler(clova_request):
+    app.logger.info("Intent started")
+    message_japanese = cek.Message(message="トランプ大統領はいま記者会見中です。脳波から読み取ったデータだと、気分は最悪です。少し時間を経た後にコンタクトをとるのがよいでしょう", language="ja")
+    response = clova.response([message_japanese])
+    return response
+
 
 # 終了時
 @clova.handle.end
