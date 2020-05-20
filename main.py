@@ -4,6 +4,9 @@ from flask import Flask, request, jsonify
 import os, random
 import cek
 from elasticsearch import Elasticsearch
+import pya3rt
+
+apikey = "{DZZ5WVUNn4GIYHZFe1lTJRXZgRQawm83}"
 
 app = Flask(__name__)
 
@@ -50,9 +53,18 @@ def number_handler(clova_request):
 @clova.handle.intent("callTrumpStatus")
 def number_handler(clova_request):
     app.logger.info("Intent started")
-    #message_japanese = cek.Message(message="トランプ大統領はいま記者会見中です。脳波から読み取ったデータだと、気分は最悪です。少し時間を経た後にコンタクトをとるのがよいでしょう", language="ja")
-    #response = clova.response([message_japanese])
-    response = clova.response("トランプ大統領",reprompt="プーチン大統領")
+    message_japanese = cek.Message(message="トランプ大統領はいま記者会見中です。脳波から読み取ったデータだと、気分は最悪です。少し時間を経た後にコンタクトをとるのがよいでしょう", language="ja")
+    response = clova.response([message_japanese])
+    #response = clova.response("トランプ大統領",reprompt="プーチン大統領")
+    return response
+
+
+# callAITalkが解析されたら実行
+@clova.handle.intent("callAITalk")
+def number_handler(clova_request):
+    app.logger.info("Intent started")
+    message_japanese = cek.Message(message=client.talk("おはよう"), language="ja")
+    response = clova.response([message_japanese])
     return response
 
 
@@ -85,6 +97,7 @@ def get_status(status):
 
 if __name__ == '__main__':
     client = Elasticsearch("218.45.184.148:59200")
+    a3rtclient = pya3rt.TalkClient(apikey)
     port = int(os.getenv("PORT", 5000))
     app.debug = True
     app.run(host="0.0.0.0", port=port)
