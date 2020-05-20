@@ -65,7 +65,7 @@ def number_handler(clova_request):
     app.logger.info("Intent started")
     response = a3rtclient.talk("おはよう")
     app.logger.info(response['results'][0]['reply'])
-    message_japanese = cek.Message(message=response['results'][0]['reply'], language="en")
+    message_japanese = cek.Message(message=response['results'][0]['reply'], language="")
     response = clova.response([message_japanese])
     return response
 
