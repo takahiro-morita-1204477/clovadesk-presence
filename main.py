@@ -52,7 +52,7 @@ def number_handler(clova_request):
     app.logger.info("Intent started")
     #message_japanese = cek.Message(message="トランプ大統領はいま記者会見中です。脳波から読み取ったデータだと、気分は最悪です。少し時間を経た後にコンタクトをとるのがよいでしょう", language="ja")
     #response = clova.response([message_japanese])
-    response = clova.response(["トランプ大統領","プーチン大統領"])
+    response = clova.response("トランプ大統領",reprompt="プーチン大統領")
     return response
 
 
