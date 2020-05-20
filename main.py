@@ -6,7 +6,7 @@ import cek
 from elasticsearch import Elasticsearch
 import pya3rt
 
-apikey = "{DZZ5WVUNn4GIYHZFe1lTJRXZgRQawm83}"
+apikey = "DZZ5WVUNn4GIYHZFe1lTJRXZgRQawm83"
 
 app = Flask(__name__)
 
